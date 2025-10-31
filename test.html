@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Swiper Filter Test</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    .swiper-slide.hidden {
+      display: none !important;
+    }
+    .btn-primary {
+      background-color: #0d6efd;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    .btn-outline-primary {
+      background-color: transparent;
+      color: #0d6efd;
+      border: 1px solid #0d6efd;
+      padding: 8px 16px;
+      margin: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div style="text-align:center; margin-bottom:1rem;">
+    <button class="btn-primary" data-filter="all">All</button>
+    <button class="btn-outline-primary" data-filter="frontend">Frontend</button>
+    <button class="btn-outline-primary" data-filter="backend">Backend</button>
+  </div>
+
+  <div class="swiper mySwiper" style="width: 600px; height: 300px;">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide" data-category="frontend" style="background:#ff6b6b;">Frontend 1</div>
+      <div class="swiper-slide" data-category="frontend" style="background:#4ecdc4;">Frontend 2</div>
+      <div class="swiper-slide" data-category="backend" style="background:#1a535c;">Backend 1</div>
+      <div class="swiper-slide" data-category="backend" style="background:#ffe66d;">Backend 2</div>
+      <div class="swiper-slide" data-category="frontend" style="background:#f7fff7;">Frontend 3</div>
+      <div class="swiper-slide" data-category="backend" style="background:#ff9f1c;">Backend 3</div>
+    </div>
+    <!-- Pagination -->
+    <div class="swiper-pagination"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const swiper = new Swiper('.mySwiper', {
+        slidesPerView: 3,
+        spaceBetween: 20,
+        pagination: { el: '.swiper-pagination', clickable: true },
+        breakpoints: {
+          0: { slidesPerView: 1 },
+          768: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 }
+        },
+      });
+
+      const filterButtons = document.querySelectorAll('button[data-filter]');
+      const slides = document.querySelectorAll('.swiper-slide');
+
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Style buttons
+          filterButtons.forEach(b => {
+            b.classList.remove('btn-primary');
+            b.classList.add('btn-outline-primary');
+          });
+          btn.classList.remove('btn-outline-primary');
+          btn.classList.add('btn-primary');
+
+          const filter = btn.getAttribute('data-filter');
+          slides.forEach(slide => {
+            if (filter === 'all' || slide.dataset.category === filter) {
+              slide.classList.remove('hidden');
+            } else {
+              slide.classList.add('hidden');
+            }
+          });
+          swiper.update();
+        });
+      });
+    });
+  </script>
+</body>
+</html>
